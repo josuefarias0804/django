@@ -19,6 +19,9 @@ class Question(models.Model):
     was_published_recently.boolean = True
     was_published_recently.short_description = 'Published recently?'
 
+    def to_json(self):
+        return {"id": 1, "question_text": "esto es una pregunta", "pub_date": "2012-04-23T18:25:43.511Z", "choices": [{id: 1, "choice_text": "opcion", "votes": 2}, {id: 2, "choice_text": ""}]}
+
 
 class Choice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
@@ -27,3 +30,6 @@ class Choice(models.Model):
 
     def __str__(self):
         return self.choice_text
+
+    def to_json(self):
+        return {id: 1, "choice_text": "opcion", "votes": 2}
