@@ -1,4 +1,4 @@
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, response
 from .models import Choice, Question
 from django.template import loader
 from django.shortcuts import render
@@ -7,6 +7,7 @@ from django.urls import reverse
 from django.views import generic
 from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
+
 
 
 class IndexView(generic.ListView):
@@ -34,6 +35,19 @@ class ResultsView(generic.DetailView):
     model = Question
     template_name = 'polls/results.html'
 
+class QuestionsView(generic.DetailView):
+    model = Question
+    template_name = 'polls/question1.html'
+
+
+
+class ChoiceView(generic.DetailView):
+    model = Choice
+    def to_json(self):
+        return Choice.objects.all().select_related()
+
+
+
 
 
 
@@ -48,7 +62,7 @@ def detail(request, question_id):
 
 def results(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
-    return render(request, 'polls/results.html', {'question': question})
+    return render(request, 'templates/polls/results.html', {'question': question})
 
 def vote(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
@@ -67,3 +81,7 @@ def vote(request, question_id):
         # with POST data. This prevents data from being posted twice if a
         # user hits the Back button.
         return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
+
+def question1(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+    return render(request, 'polls/question1.html', {'question': question})
