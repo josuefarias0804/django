@@ -17,7 +17,10 @@ class Question(models.Model):
     was_published_recently.short_description = 'Published recently?'
 
     def to_json(self):
-        return json.dumps({"id": id, "question_text": self.question_text})
+        my_dict = [{self.id: 1, "choice_text": "opcion", "votes": 2}, {self.id: 2, "choice_text": ""}]
+        timestampStr = self.pub_date.strftime("%d-%b-%Y (%H:%M:%S.%f)")
+        return json.dumps({"id": 1, "question_text": self.question_text, "pub_date": timestampStr, "choices": str(my_dict)})
+
 
 
 class Choice(models.Model):

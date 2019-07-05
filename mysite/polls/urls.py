@@ -1,6 +1,6 @@
 from django.urls import path
 
-from polls.views import ChoiceView
+
 from . import views
 
 urlpatterns = [
