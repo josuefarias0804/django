@@ -1,9 +1,11 @@
 from django.utils import timezone
 from datetime import datetime
+from urllib.request import urlopen
 
 
 from django.db import models
 import json
+# import urllib2
 
 
 
@@ -27,17 +29,19 @@ class Question(models.Model):
         return json.dumps({"id": 1, "question_text": self.question_text, "pub_date": timestampStr, "choices": str(my_dict)})
 
     def post(self):
-        
+
         data = {
             'ids': [12, 3, 4, 5, 6]
         }
 
-        req = urllib2.Request('http://example.com/api/posts/create')
+        req = urllib2.request('http://example.com/api/posts/create')
         req.add_header('Content-Type', 'application/json')
+        html = urlopen("http://www.google.com/")
+        print(html)
 
         response = urllib2.urlopen(req, json.dumps(data))
 
-        return response
+        return html
 
 class Choice(models.Model):
 
