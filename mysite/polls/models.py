@@ -1,3 +1,4 @@
+from django.http import StreamingHttpResponse
 from django.utils import timezone
 from datetime import datetime
 from urllib.request import urlopen
@@ -5,7 +6,7 @@ from urllib.request import urlopen
 
 from django.db import models
 import json
-# import urllib2
+
 
 
 
@@ -23,25 +24,12 @@ class Question(models.Model):
     was_published_recently.short_description = 'Published recently?'
 
     def to_json(self):
-        choice_text_tojson = Choice.objects.filter(question__pub_date__year=timezone.now().year)
-        my_dict = [{self.id: 1, "choice_text": choice_text_tojson, "votes": 2}, {self.id: 2, "choice_text": choice_text_tojson}]
+        # choice_text_tojson = Choice.objects.filter(question__pub_date__year=timezone.now().year)
+        my_dict = [{self.id, "choice_text": choice_text_tojson, "votes": 2}, {self.id: 2, "choice_text": choice_text_tojson}]
         timestampStr = self.pub_date.strftime("%d-%b-%Y (%H:%M:%S.%f)")
-        return json.dumps({"id": 1, "question_text": self.question_text, "pub_date": timestampStr, "choices": str(my_dict)})
+        return json.dumps({"id": self.id, "question_text": self.question_text, "pub_date": timestampStr, "choices": str(my_dict)})
 
-    def post(self):
 
-        data = {
-            'ids': [12, 3, 4, 5, 6]
-        }
-
-        req = urllib2.request('http://example.com/api/posts/create')
-        req.add_header('Content-Type', 'application/json')
-        html = urlopen("http://www.google.com/")
-        print(html)
-
-        response = urllib2.urlopen(req, json.dumps(data))
-
-        return html
 
 class Choice(models.Model):
 
